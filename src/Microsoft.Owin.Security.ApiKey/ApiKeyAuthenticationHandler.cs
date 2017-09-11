@@ -15,10 +15,14 @@ namespace Microsoft.Owin.Security.ApiKey
 
             if (!String.IsNullOrWhiteSpace(authorizationHeader))
             {
-                if (Options.HeaderKey.Length > 0)
+                if (Options.HeaderKeyArray == null && Options.HeaderKey!=null)
+                {
+                    Options.HeaderKeyArray = new[] {Options.HeaderKey};
+                }
+                if (Options.HeaderKeyArray != null && Options.HeaderKeyArray.Length > 0)
                 {
                     var headerKeyFound = false;
-                    foreach (var headerKey in this.Options.HeaderKey)
+                    foreach (var headerKey in this.Options.HeaderKeyArray)
                     {
                         if (authorizationHeader.StartsWith(headerKey, StringComparison.OrdinalIgnoreCase))
                         {

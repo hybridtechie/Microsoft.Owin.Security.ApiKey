@@ -35,6 +35,16 @@
         /// </para>
         /// <para>Authorization: ApiKey 4fb4e33c83e5d026e8745102b72f10590f48e94af107db15074c799589a4753d</para>
         /// </summary>
-        public string[] HeaderKey { get; set; } = {"ApiKey",""};
+        public string HeaderKey { get; set; } ="ApiKey";
+
+        /// <summary>
+        /// The array of supported keys for the key/value pair that represents the authentication type and its data.
+        /// Defaults to null. If value is set, this is used instead of HeaderKey
+        /// <para>
+        /// An example header using the <see cref="ApiKeyAuthenticationOptions"/> defaults would be:
+        /// </para>
+        /// <para>Authorization: ApiKey 4fb4e33c83e5d026e8745102b72f10590f48e94af107db15074c799589a4753d</para>
+        /// </summary>
+        public string[] HeaderKeyArray { get; set; } = null;
     }
 }

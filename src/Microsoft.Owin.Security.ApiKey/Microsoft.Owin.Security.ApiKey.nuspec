@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Microsoft.Owin.Security.ApiKey</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>Microsoft.Owin.Security.ApiKey</title>
-    <authors>James Harling</authors>
-    <owners>James Harling</owners>
+    <authors>James Harling, Nithin James</authors>
+    <owners>James Harling, Nithin James</owners>
     <licenseUrl>https://github.com/jamesharling/Microsoft.Owin.Security.ApiKey/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <projectUrl>https://github.com/jamesharling/Microsoft.Owin.Security.ApiKey</projectUrl>
+    <projectUrl>https://github.com/hybridtechie/Microsoft.Owin.Security.ApiKey</projectUrl>
     <description>Middleware for your Owin pipeline that allows an application to perform authentication of requests via an API key in the Authorization header.</description>
     <summary>Owin middleware that enables an application to authenticate with API keys.</summary>
     <copyright>Copyright © James Harling</copyright>
