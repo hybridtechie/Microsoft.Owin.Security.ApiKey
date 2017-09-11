@@ -13,7 +13,6 @@ namespace Microsoft.Owin.Security.ApiKey
         {
             if (this.Request.Headers.ContainsKey(this.Options.Header))
             {
-<<<<<<< HEAD
                 if (Options.HeaderKeyArray == null && Options.HeaderKey!=null)
                 {
                     Options.HeaderKeyArray = new[] {Options.HeaderKey};
@@ -22,13 +21,6 @@ namespace Microsoft.Owin.Security.ApiKey
                 {
                     var headerKeyFound = false;
                     foreach (var headerKey in this.Options.HeaderKeyArray)
-=======
-                string authorizationHeader = this.Request.Headers.Get(this.Options.Header);
-
-                if (!string.IsNullOrWhiteSpace(authorizationHeader))
-                {
-                    if (Options.HeaderKeyArray == null && Options.HeaderKey != null)
->>>>>>> feature/wayWeDoNuget
                     {
                         Options.HeaderKeyArray = new[] {Options.HeaderKey};
                     }
