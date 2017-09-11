@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security.ApiKey.Contexts;
@@ -14,31 +15,54 @@ namespace Microsoft.Owin.Security.ApiKey
 
             if (!String.IsNullOrWhiteSpace(authorizationHeader))
             {
-                foreach (var headerKey in this.Options.HeaderKey)
+                if (Options.HeaderKey.Length > 0)
                 {
-                    if (authorizationHeader.StartsWith(headerKey, StringComparison.OrdinalIgnoreCase))
+                    var headerKeyFound = false;
+                    foreach (var headerKey in this.Options.HeaderKey)
                     {
-                        string apiKey = authorizationHeader.Substring(headerKey.Length).Trim();
-
-                        var context = new ApiKeyValidateIdentityContext(this.Context, this.Options, apiKey);
-
-                        await this.Options.Provider.ValidateIdentity(context);
-
-                        if (context.IsValidated)
+                        if (authorizationHeader.StartsWith(headerKey, StringComparison.OrdinalIgnoreCase))
                         {
-                            var claims =
-                                await this.Options.Provider.GenerateClaims(
-                                    new ApiKeyGenerateClaimsContext(this.Context, this.Options, apiKey));
-
-                            var identity = new ClaimsIdentity(claims, this.Options.AuthenticationType);
-
-                            return new AuthenticationTicket(identity, new AuthenticationProperties()
+                            headerKeyFound = true;
+                            string apiKey = authorizationHeader.Substring(headerKey.Length).Trim();
+                            if (!string.IsNullOrEmpty(apiKey))
                             {
-                                IssuedUtc = DateTime.UtcNow
-                            });
+                                var context = new ApiKeyValidateIdentityContext(this.Context, this.Options, apiKey);
+
+                                await this.Options.Provider.ValidateIdentity(context);
+
+                                if (context.IsValidated)
+                                {
+                                    var claims =
+                                        await this.Options.Provider.GenerateClaims(
+                                            new ApiKeyGenerateClaimsContext(this.Context, this.Options, apiKey));
+
+                                    var identity = new ClaimsIdentity(claims, this.Options.AuthenticationType);
+
+                                    return new AuthenticationTicket(identity, new AuthenticationProperties()
+                                    {
+                                        IssuedUtc = DateTime.UtcNow
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                throw new ArgumentNullException(nameof(Options.HeaderKey),"ApiKey not found");
+                            }
                         }
                     }
+                    if (!headerKeyFound)
+                    {
+                        throw new InvalidCredentialException("Header Key Not Supported");
+                    }
                 }
+                else
+                {
+                    throw new ArgumentNullException(nameof(Options.HeaderKey), "No Header Key( eg: Apikey) Found.");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(authorizationHeader), "Authorization Header not found.");
             }
 
             return null;

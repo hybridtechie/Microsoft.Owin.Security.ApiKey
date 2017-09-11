@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Owin.Security.ApiKey.Web;
@@ -25,12 +27,61 @@ namespace Microsoft.Owin.Security.ApiKey.Tests
         }
 
         [TestMethod]
-        public async Task WebRequest_Anonymous_Authentication_Should_Yield_401()
+        public async Task WebRequest_No_Authorization_Header_Should_Yield_ArgumentNullException()
         {
-            var response = await this.api.HttpClient.GetAsync("/api/values");
+            try
+            {
+                await this.api.HttpClient.GetAsync("/api/values");
+            }
+            catch (Exception e)
+            {
+                e.Should().BeOfType<ArgumentNullException>();
+            }
 
-            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
+
+        [TestMethod]
+        public async Task WebRequest_No_HeaderKey_Should_Yield_ArgumentNullException()
+        {
+            try
+            {
+                await this.api.CreateRequest("/api/values").AddHeader("Authorization", null).GetAsync(); ;
+            }
+            catch (Exception e)
+            {
+                e.Should().BeOfType<ArgumentNullException>();
+            }
+
+        }
+
+        [TestMethod]
+        public async Task WebRequest_Wrong_HeaderKey_Should_Yield_InvalidCredentialsException()
+        {
+            try
+            {
+                await this.api.CreateRequest("/api/values").AddHeader("Authorization", "Bearer 1234").GetAsync(); ;
+            }
+            catch (Exception e)
+            {
+                e.Should().BeOfType<InvalidCredentialException>();
+            }
+
+        }
+
+        [TestMethod]
+        public async Task WebRequest_Empty_HeaderKey_Should_Yield_ArgumentNullException()
+        {
+            try
+            {
+                await this.api.CreateRequest("/api/values").AddHeader("Authorization", "").GetAsync(); ;
+            }
+            catch (Exception e)
+            {
+                e.Should().BeOfType<ArgumentNullException>();
+            }
+
+        }
+
 
         [TestMethod]
         public async Task WebRequest_ApiKey_Authentication_Should_Yield_200()
