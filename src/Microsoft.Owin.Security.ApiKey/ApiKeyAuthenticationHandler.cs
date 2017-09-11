@@ -14,24 +14,29 @@ namespace Microsoft.Owin.Security.ApiKey
 
             if (!String.IsNullOrWhiteSpace(authorizationHeader))
             {
-                if (authorizationHeader.StartsWith(this.Options.HeaderKey, StringComparison.OrdinalIgnoreCase))
+                foreach (var headerKey in this.Options.HeaderKey)
                 {
-                    string apiKey = authorizationHeader.Substring(this.Options.HeaderKey.Length).Trim();
-
-                    var context = new ApiKeyValidateIdentityContext(this.Context, this.Options, apiKey);
-
-                    await this.Options.Provider.ValidateIdentity(context);
-
-                    if (context.IsValidated)
+                    if (authorizationHeader.StartsWith(headerKey, StringComparison.OrdinalIgnoreCase))
                     {
-                        var claims = await this.Options.Provider.GenerateClaims(new ApiKeyGenerateClaimsContext(this.Context, this.Options, apiKey));
+                        string apiKey = authorizationHeader.Substring(headerKey.Length).Trim();
 
-                        var identity = new ClaimsIdentity(claims, this.Options.AuthenticationType);
+                        var context = new ApiKeyValidateIdentityContext(this.Context, this.Options, apiKey);
 
-                        return new AuthenticationTicket(identity, new AuthenticationProperties()
+                        await this.Options.Provider.ValidateIdentity(context);
+
+                        if (context.IsValidated)
                         {
-                            IssuedUtc = DateTime.UtcNow
-                        });
+                            var claims =
+                                await this.Options.Provider.GenerateClaims(
+                                    new ApiKeyGenerateClaimsContext(this.Context, this.Options, apiKey));
+
+                            var identity = new ClaimsIdentity(claims, this.Options.AuthenticationType);
+
+                            return new AuthenticationTicket(identity, new AuthenticationProperties()
+                            {
+                                IssuedUtc = DateTime.UtcNow
+                            });
+                        }
                     }
                 }
             }

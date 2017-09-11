@@ -20,7 +20,8 @@ namespace Microsoft.Owin.Security.ApiKey.Web
                 {
                     OnValidateIdentity = this.ValidateApiKey,
                     OnGenerateClaims = this.GenerateClaims
-                }
+                },
+                HeaderKey = new []{"Apikey" , "apiKey", "APIKEY",""}
             });
 
             var config = new HttpConfiguration();
