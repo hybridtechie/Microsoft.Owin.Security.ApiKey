@@ -35,8 +35,10 @@ namespace Microsoft.Owin.Security.ApiKey.Tests
         [TestMethod]
         public async Task WebRequest_ApiKey_Authentication_Should_Yield_200()
         {
-            var response = await this.api.CreateRequest("/api/values").AddHeader("Authorization", "ApiKey 123").GetAsync();
-
+            var response = await this.api.CreateRequest("/api/values").AddHeader("Authorization", "ApiKey 123")
+                .GetAsync();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response = await this.api.CreateRequest("/api/values").AddHeader("Authorization", "123").GetAsync();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
