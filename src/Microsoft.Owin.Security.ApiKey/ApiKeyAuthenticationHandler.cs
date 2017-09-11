@@ -64,11 +64,6 @@ namespace Microsoft.Owin.Security.ApiKey
                     throw new ArgumentNullException(nameof(Options.HeaderKey), "No Header Key( eg: Apikey) Found.");
                 }
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(authorizationHeader), "Authorization Header not found.");
-            }
-
             return null;
         }
     }
