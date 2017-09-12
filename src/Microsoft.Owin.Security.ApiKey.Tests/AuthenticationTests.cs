@@ -54,7 +54,7 @@ namespace Microsoft.Owin.Security.ApiKey.Tests
 
         }
 
-        [TestMethod]
+       [TestMethod]
         public async Task WebRequest_Wrong_HeaderKey_Should_Yield_InvalidCredentialsException()
         {
             try
