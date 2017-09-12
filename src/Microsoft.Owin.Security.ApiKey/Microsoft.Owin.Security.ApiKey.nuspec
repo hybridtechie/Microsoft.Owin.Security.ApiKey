@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Microsoft.Owin.Security.ApiKey</id>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <title>Microsoft.Owin.Security.ApiKey</title>
     <authors>James Harling, Nithin James</authors>
     <owners>James Harling, Nithin James</owners>
