@@ -13,14 +13,11 @@ namespace Microsoft.Owin.Security.ApiKey
         {
             if (this.Request.Headers.ContainsKey(this.Options.Header))
             {
-                if (Options.HeaderKeyArray == null && Options.HeaderKey!=null)
+                string authorizationHeader = this.Request.Headers.Get(this.Options.Header);
+
+                if (!string.IsNullOrWhiteSpace(authorizationHeader))
                 {
-                    Options.HeaderKeyArray = new[] {Options.HeaderKey};
-                }
-                if (Options.HeaderKeyArray != null && Options.HeaderKeyArray.Length > 0)
-                {
-                    var headerKeyFound = false;
-                    foreach (var headerKey in this.Options.HeaderKeyArray)
+                    if (Options.HeaderKeyArray == null && Options.HeaderKey != null)
                     {
                         Options.HeaderKeyArray = new[] {Options.HeaderKey};
                     }
