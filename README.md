@@ -36,3 +36,16 @@ private async Task<IEnumerable<Claim>> GenerateClaims(ApiKeyGenerateClaimsContex
     return new[] { new Claim(ClaimTypes.Name, "Fred") };
 }
 ```
+
+##Changes in Fork
+
+Add HeaderKey Array.
+This allows developers to support ApiKeys of the format "Apikey 123" and "1234".
+This is useful when creating custom connectors for Microsoft flow or Zapier.
+
+Meaningful Exceptions on Errors
+Developers can catch the exception in a custom ExceptionHandlerMiddleware and provide meaning feedback to users. Currently 401 response with '"Message": "Authorization has been denied for this request."' is provided for an invalid request which doesn't give enough insight to the issue.
+
+Add Unit Tests for the changes
+Existing users get errors instead of 401 response
+
